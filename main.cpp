@@ -6,17 +6,19 @@
 class Timer
 {
 public:
-    double totalSeconds;
-    Timer(double minutes) : totalSeconds(minutes * 60) {}  // Interesting constructor syntax
+    double totalSeconds{};
+
+    Timer(double userMinutes) : totalSeconds(userMinutes * 60) {}  // Interesting constructor syntax
 
     void start()
     {
-        for (double i = totalSeconds; i > 0; i--)
+        for (double i = totalSeconds; i > 0; i--) // decreaments from total minutes
         {
-            int secondsCounter = i;
-            int minuteCounter = secondsCounter / 60;
-            std::cout << "\rMinutes:  " << minuteCounter << " Seconds: " << secondsCounter % 60 << std::flush;
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            int displaySeconds = i;
+            int displayMinutes = displaySeconds / 60; 
+            std::cout << "Total seconds left: " << displaySeconds << " Minutes: " << displayMinutes << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1)); // This pauses the thread for exactly one second
+
         }
         std::cout << "\nEnd of timer " << std::endl; 
         system("paplay ~/data/piano.mp3");  // Replace /path/to/your/Alarm.wav
@@ -26,15 +28,16 @@ public:
 class Prompt
 {
 public:
-    char question{};
-    Prompt(char hold) : question(hold) {}
+    char hold{};
+    Prompt(char question) : hold(question) {} 
 
     void start()  
     {
         std::cout << "Would you like to start? " << std::endl;
-        if(question == 'y')
+        std::cin >> hold;
+        if(hold == 'y')
         {
-            std::cout << "Hello world! ";
+            std::cout << "Hello world! " << std::endl;
         }
     }
 };
@@ -42,7 +45,6 @@ public:
 
 int main()
 {
-    Prompt pomodoro('y');
-    pomodoro.start();
     return 0;
+
 }
